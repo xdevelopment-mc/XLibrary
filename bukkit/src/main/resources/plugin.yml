@@ -1,0 +1,7 @@
+name: XLibrary
+main: net.xdevelopment.xlibrary.LibraryPlugin
+
+authors: [ Twice, Koopin ]
+
+version: '1.0-SNAPSHOT'
+api-version: '1.21'
