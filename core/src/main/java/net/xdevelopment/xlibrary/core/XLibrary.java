@@ -1,21 +1,17 @@
 package net.xdevelopment.xlibrary.core;
 
-import org.jetbrains.annotations.NotNull;
-
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class XLibrary {
 
-    private static XLibrary instance;
+    private static final XLibrary INSTANCE = new XLibrary();
 
-    @NotNull
     public static XLibrary getInstance() {
-        if (instance == null) {
-            instance = new XLibrary();
-        }
-        return instance;
+        return INSTANCE;
     }
 
     public void init() {

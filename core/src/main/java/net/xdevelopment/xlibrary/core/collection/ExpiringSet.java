@@ -1,53 +1,62 @@
 package net.xdevelopment.xlibrary.core.collection;
 
-import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 
-public final class ExpiringSet<E> extends AbstractSet<E> implements Set<E>, Serializable {
+public final class ExpiringSet<E> extends AbstractSet<E> implements Set<E> {
 
-    private static final Object PRESENT = new Object();
-
-    private final ConcurrentMap<E, Object> map;
-    private final Cache<E, Object> cache;
+    private final long expireMillis;
+    private final Object2LongMap<E> map = new Object2LongOpenHashMap<>();
 
     public ExpiringSet(long expireMillis) {
-        this.cache = CacheBuilder.newBuilder()
-                .expireAfterWrite(expireMillis, TimeUnit.MILLISECONDS)
-                .build(new CacheLoader<>() {
-                    @NotNull
-                    @Override
-                    public Object load(@NotNull Object o) {
-                        return PRESENT;
-                    }
-                });
+        this.expireMillis = expireMillis;
+        this.map.defaultReturnValue(-1L);
+    }
 
-        this.map = this.cache.asMap();
+    @Override
+    public boolean add(@NotNull E e) {
+        cleanup();
+        long previous = this.map.put(e, System.currentTimeMillis());
+        return previous == -1L;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        cleanup();
+        return this.map.containsKey(o);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return this.map.removeLong(o) != -1L;
     }
 
     @NotNull
     @Override
     public Iterator<E> iterator() {
+        cleanup();
         return this.map.keySet().iterator();
     }
 
     @Override
     public int size() {
-        this.cache.cleanUp();
+        cleanup();
         return this.map.size();
     }
 
     @Override
-    public boolean add(@NotNull E e) {
-        return this.map.put(e, ExpiringSet.PRESENT) == null;
+    public void clear() {
+        this.map.clear();
+    }
+
+    private void cleanup() {
+        long current = System.currentTimeMillis();
+        this.map.object2LongEntrySet().removeIf(entry -> current - entry.getLongValue() > expireMillis);
     }
 }

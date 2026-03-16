@@ -1,42 +1,39 @@
 package net.xdevelopment.xlibrary.core.utility;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.jetbrains.annotations.NotNull;
 
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
+import lombok.Getter;
 import lombok.ToString;
 
 @ToString
 public class Difference<T> {
 
-    private final LinkedHashSet<Change<T>> changes = new LinkedHashSet<>();
-
-    @NotNull
-    public Set<Change<T>> getChanges() {
-        return this.changes;
-    }
+    @Getter
+    private final ObjectLinkedOpenHashSet<Change<T>> changes = new ObjectLinkedOpenHashSet<>();
 
     public boolean isEmpty() {
         return this.changes.isEmpty();
     }
 
     @NotNull
-    public Set<T> getChanges(@NotNull ChangeType type) {
-        return this.changes.stream()
-                .filter(change -> change.type() == type)
-                .map(Change::value)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+    public ObjectLinkedOpenHashSet<T> getChanges(@NotNull ChangeType type) {
+        ObjectLinkedOpenHashSet<T> result = new ObjectLinkedOpenHashSet<>();
+        for (Change<T> change : this.changes) {
+            if (change.type() == type) {
+                result.add(change.value());
+            }
+        }
+        return result;
     }
 
     @NotNull
-    public Set<T> getAdded() {
+    public ObjectLinkedOpenHashSet<T> getAdded() {
         return getChanges(ChangeType.ADD);
     }
 
     @NotNull
-    public Set<T> getRemoved() {
+    public ObjectLinkedOpenHashSet<T> getRemoved() {
         return getChanges(ChangeType.REMOVE);
     }
 

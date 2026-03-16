@@ -8,7 +8,6 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 
-
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ButtonUtility {

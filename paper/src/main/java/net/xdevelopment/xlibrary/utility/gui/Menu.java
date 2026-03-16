@@ -1,6 +1,5 @@
 package net.xdevelopment.xlibrary.utility.gui;
 
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
@@ -15,10 +14,9 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import java.util.Map;
-
 @Getter
 public class Menu implements InventoryHolder {
+    
     private final String id;
     private Component title;
     private final Inventory inventory;
@@ -63,8 +61,8 @@ public class Menu implements InventoryHolder {
 
     public Menu refreshItems() {
         inventory.clear();
-        for (Map.Entry<Integer, MenuSlot> entry : slots.int2ObjectEntrySet()) {
-            inventory.setItem(entry.getKey(), entry.getValue().getItem());
+        for (Int2ObjectMap.Entry<MenuSlot> entry : slots.int2ObjectEntrySet()) {
+            inventory.setItem(entry.getIntKey(), entry.getValue().getItem());
         }
         for (HumanEntity viewer : inventory.getViewers()) {
             if (viewer instanceof Player player) {
@@ -90,9 +88,9 @@ public class Menu implements InventoryHolder {
     }
 
     public int getSlotPosition(MenuSlot slot) {
-        for (Map.Entry<Integer, MenuSlot> entry : slots.int2ObjectEntrySet()) {
+        for (Int2ObjectMap.Entry<MenuSlot> entry : slots.int2ObjectEntrySet()) {
             if (entry.getValue().equals(slot)) {
-                return entry.getKey();
+                return entry.getIntKey();
             }
         }
         return -1;

@@ -1,6 +1,8 @@
 package net.xdevelopment.xlibrary.utility.gui.slot;
 
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,10 +11,7 @@ import net.xdevelopment.xlibrary.utility.HeadUtility;
 import net.xdevelopment.xlibrary.utility.gui.executable.ExecutableClick;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +19,7 @@ import java.util.List;
 
 @Getter
 @Accessors(chain = true)
+@SuppressWarnings("UnstableApiUsage")
 public final class MenuSlot {
     private ItemStack item;
     private ExecutableClick executable;
@@ -34,7 +34,7 @@ public final class MenuSlot {
     }
 
     public MenuSlot(@NotNull Material material) {
-        this.item = new ItemStack(material);
+        this.item = ItemStack.of(material);
     }
 
     public MenuSlot(@NotNull String materialKey) {
@@ -42,14 +42,12 @@ public final class MenuSlot {
     }
 
     public MenuSlot(@NotNull Material material, @NotNull String display, @NotNull List<String> lore) {
-        this.item = new ItemStack(material);
-        ItemMeta meta = this.item.getItemMeta();
-        if (meta != null) {
-            meta.displayName(Component.text(display));
-            meta.lore(lore.stream().map(Component::text).toList());
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            this.item.setItemMeta(meta);
-        }
+        this.item = ItemStack.of(material);
+        this.item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(display));
+        this.item.setData(DataComponentTypes.LORE, ItemLore.lore()
+                .addLines(lore.stream().map(Component::text).toList())
+                .build());
+        this.item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
     }
 
     public MenuSlot setItem(@NotNull ItemStack item) {
@@ -58,22 +56,14 @@ public final class MenuSlot {
     }
 
     public MenuSlot display(@NotNull String display) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return this;
-        }
-        meta.displayName(Component.text(display));
-        item.setItemMeta(meta);
+        item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(display));
         return this;
     }
 
     public MenuSlot lore(@NotNull List<String> lore) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return this;
-        }
-        meta.lore(lore.stream().map(Component::text).toList());
-        item.setItemMeta(meta);
+        item.setData(DataComponentTypes.LORE, ItemLore.lore()
+                .addLines(lore.stream().map(Component::text).toList())
+                .build());
         return this;
     }
 
@@ -83,47 +73,18 @@ public final class MenuSlot {
     }
 
     public MenuSlot hideAttributes(boolean hide) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            if (hide) {
-                meta.addItemFlags(
-                        ItemFlag.HIDE_ATTRIBUTES,
-                        ItemFlag.HIDE_ENCHANTS,
-                        ItemFlag.HIDE_DESTROYS,
-                        ItemFlag.HIDE_DYE,
-                        ItemFlag.HIDE_PLACED_ON,
-                        ItemFlag.HIDE_UNBREAKABLE,
-                        ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
-                        ItemFlag.HIDE_ARMOR_TRIM
-                );
-            } else {
-                meta.removeItemFlags(
-                        ItemFlag.HIDE_ATTRIBUTES,
-                        ItemFlag.HIDE_ENCHANTS,
-                        ItemFlag.HIDE_DESTROYS,
-                        ItemFlag.HIDE_DYE,
-                        ItemFlag.HIDE_PLACED_ON,
-                        ItemFlag.HIDE_UNBREAKABLE,
-                        ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
-                        ItemFlag.HIDE_ARMOR_TRIM
-                );
-            }
-            item.setItemMeta(meta);
+        if (hide) {
+            item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+            item.setData(DataComponentTypes.HIDE_TOOLTIP);
+        } else {
+            item.unsetData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+            item.unsetData(DataComponentTypes.HIDE_TOOLTIP);
         }
         return this;
     }
 
     public MenuSlot enchanted(boolean enchanted) {
-        if (enchanted) {
-            item.addUnsafeEnchantment(Enchantment.LURE, 1);
-        } else {
-            item.removeEnchantment(Enchantment.LURE);
-        }
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            item.setItemMeta(meta);
-        }
+        item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchanted);
         return this;
     }
 

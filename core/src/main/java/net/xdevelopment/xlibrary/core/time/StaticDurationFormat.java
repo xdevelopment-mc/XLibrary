@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Range;
 
 import java.time.Duration;
 
+// Thanks https://github.com/BlackBaroness/duration-serializer-java?tab=readme-ov-file
 @RequiredArgsConstructor
 public abstract class StaticDurationFormat implements DurationFormat {
 

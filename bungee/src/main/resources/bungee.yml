@@ -1,0 +1,4 @@
+name: XLibrary
+main: net.xdevelopment.xlibrary.LibraryBungee
+version: "1.0-SNAPSHOT"
+author: Twice
