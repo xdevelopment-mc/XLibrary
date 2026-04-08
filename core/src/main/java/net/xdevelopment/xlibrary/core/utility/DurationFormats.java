@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 import lombok.experimental.UtilityClass;
 import net.xdevelopment.xlibrary.core.time.DurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.FullWordEnglishDurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.FullWordRussianDurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.MediumLenghtRussianDurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.MediumLengthEnglishDurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.ShortEnglishDurationFormat;
-import net.xdevelopment.xlibrary.core.time.impl.ShortRussianDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.en.FullWordEnglishDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.ru.FullWordRussianDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.ru.MediumLenghtRussianDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.en.MediumLengthEnglishDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.en.ShortEnglishDurationFormat;
+import net.xdevelopment.xlibrary.core.time.impl.ru.ShortRussianDurationFormat;
 
 @UtilityClass
 public class DurationFormats {

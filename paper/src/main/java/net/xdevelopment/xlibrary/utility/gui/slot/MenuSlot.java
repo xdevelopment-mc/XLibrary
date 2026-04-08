@@ -45,8 +45,8 @@ public final class MenuSlot {
     }
 
     public MenuSlot(@NotNull Displayable displayable) {
-        this.item = ItemStack.of(displayable.icon());
-        this.item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(displayable.displayName()));
+        this.item = ItemStack.of(displayable.getIcon());
+        this.item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(displayable.getDisplayName()));
     }
 
     public MenuSlot(@NotNull Material material, @NotNull String display, @NotNull List<String> lore) {

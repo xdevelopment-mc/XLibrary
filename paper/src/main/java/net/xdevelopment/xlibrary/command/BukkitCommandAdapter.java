@@ -101,11 +101,9 @@ final class BukkitCommandAdapter extends org.bukkit.command.Command {
         }
 
         String input = args[args.length - 1];
-        var suggestions = new ArrayList<String>();
 
-        suggestions.addAll(CollectionUtility.getSequentialMatches(
-                new ArrayList<>(currentArgs.keySet()), input
-        ));
+        var suggestions = new ArrayList<>(CollectionUtility.getSequentialMatches(
+                new ArrayList<>(currentArgs.keySet()), input));
 
         List<String> contextSuggestions;
         if (resolved != null) {

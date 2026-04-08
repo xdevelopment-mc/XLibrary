@@ -13,7 +13,7 @@ public interface LoadableListenerPipeline extends Listener, LoadablePipeline {
 
     @Override
     default void load() {
-        Bukkit.getPluginManager().registerEvents(this,
-                JavaPlugin.getProvidingPlugin(LoadableListenerPipeline.class));
+        var plugin = JavaPlugin.getProvidingPlugin(LoadableListenerPipeline.class);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 }

@@ -12,7 +12,7 @@ import java.util.StringJoiner;
  */
 public interface ArgumentProvider {
 
-    String argument(int i);
+    String getArgument(int i);
 
     int argumentCount();
 
@@ -21,30 +21,30 @@ public interface ArgumentProvider {
     }
 
     default int argumentAsInt(int i, int defaultValue) {
-        return hasArgument(i) ? NumberUtility.getInteger(argument(i), defaultValue) : defaultValue;
+        return hasArgument(i) ? NumberUtility.getInteger(getArgument(i), defaultValue) : defaultValue;
     }
 
     default long argumentAsLong(int i, long defaultValue) {
-        return hasArgument(i) ? NumberUtility.getLong(argument(i), defaultValue) : defaultValue;
+        return hasArgument(i) ? NumberUtility.getLong(getArgument(i), defaultValue) : defaultValue;
     }
 
     default double argumentAsDouble(int i, double defaultValue) {
-        return hasArgument(i) ? NumberUtility.getDouble(argument(i), defaultValue) : defaultValue;
+        return hasArgument(i) ? NumberUtility.getDouble(getArgument(i), defaultValue) : defaultValue;
     }
 
     default float argumentAsFloat(int i, float defaultValue) {
-        return hasArgument(i) ? NumberUtility.getFloat(argument(i), defaultValue) : defaultValue;
+        return hasArgument(i) ? NumberUtility.getFloat(getArgument(i), defaultValue) : defaultValue;
     }
 
     @Nullable
     default <T extends Enum<T>> T argumentAsEnum(int i, @NotNull Class<T> clazz) {
-        return hasArgument(i) ? EnumUtility.get(argument(i), clazz) : null;
+        return hasArgument(i) ? EnumUtility.get(getArgument(i), clazz) : null;
     }
 
     default @NotNull String joinArguments(int start) {
         var joiner = new StringJoiner(" ");
         for (int i = start, j = argumentCount(); i < j; i++) {
-            joiner.add(argument(i));
+            joiner.add(getArgument(i));
         }
         return joiner.toString();
     }

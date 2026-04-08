@@ -1,4 +1,4 @@
-package net.xdevelopment.xlibrary.core.time.impl;
+package net.xdevelopment.xlibrary.core.time.impl.ru;
 
 import net.xdevelopment.xlibrary.core.time.StaticDurationFormat;
 

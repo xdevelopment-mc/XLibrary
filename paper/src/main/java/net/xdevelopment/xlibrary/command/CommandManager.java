@@ -22,5 +22,5 @@ public interface CommandManager {
 
     @Unmodifiable
     @NotNull
-    List<@NotNull Command> commands();
+    List<@NotNull Command> getCommands();
 }

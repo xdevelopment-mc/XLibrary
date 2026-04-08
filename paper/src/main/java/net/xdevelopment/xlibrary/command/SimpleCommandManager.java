@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,8 +32,8 @@ public final class SimpleCommandManager implements CommandManager {
 
     @Override
     @Nullable
-    public Command findCommand(@NotNull String commandName) {
-        return name2CommandMap.get(commandName.toLowerCase());
+    public Command findCommand(@NotNull String name) {
+        return name2CommandMap.get(name.toLowerCase());
     }
 
     @Override
@@ -61,15 +62,13 @@ public final class SimpleCommandManager implements CommandManager {
     }
 
     @Override
-    public boolean unregister(@NotNull String commandName) {
-        var command = name2CommandMap.get(commandName.toLowerCase());
+    public boolean unregister(@NotNull String name) {
+        var command = name2CommandMap.get(name.toLowerCase());
         return command != null && unregister(command);
     }
 
     @Override
-    @NotNull
-    @Unmodifiable
-    public List<@NotNull Command> commands() {
+    public @NonNull @Unmodifiable List<Command> getCommands() {
         return List.copyOf(commands);
     }
 }

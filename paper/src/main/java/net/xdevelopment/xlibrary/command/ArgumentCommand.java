@@ -1,5 +1,6 @@
 package net.xdevelopment.xlibrary.command;
 
+import net.xdevelopment.xlibrary.core.Identifiable;
 import net.xdevelopment.xlibrary.command.annotation.CommandArgument;
 import net.xdevelopment.xlibrary.command.annotation.CommandPermission;
 
@@ -13,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.xdevelopment.xlibrary.core.Identifiable;
 
 import java.util.UUID;
 
@@ -46,19 +46,9 @@ public abstract class ArgumentCommand implements CommandExecutor, Identifiable {
     }
 
     @NotNull
-    public ArgumentCommand argument(@NotNull ArgumentCommand argumentCommand) {
+    public ArgumentCommand addArgument(@NotNull ArgumentCommand argumentCommand) {
         argumentCommands.put(argumentCommand.getName().toLowerCase(), argumentCommand);
         return this;
-    }
-
-    @Override
-    public @NotNull UUID uniqueId() {
-        return uniqueId;
-    }
-
-    @Override
-    public @NotNull String name() {
-        return name;
     }
 
     @Nullable
@@ -66,7 +56,6 @@ public abstract class ArgumentCommand implements CommandExecutor, Identifiable {
         return argumentCommands.get(name.toLowerCase());
     }
 
-    @NotNull
     public List<String> tabComplete(@NotNull CommandContext context) {
         return List.of();
     }

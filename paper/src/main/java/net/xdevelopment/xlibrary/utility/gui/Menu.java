@@ -122,12 +122,12 @@ public class Menu implements InventoryHolder, Identifiable {
     }
 
     @Override
-    public @NotNull String name() {
+    public @NotNull String getName() {
         return id;
     }
 
     @Override
-    public @NotNull UUID uniqueId() {
+    public @NotNull UUID getUniqueId() {
         return uniqueId;
     }
 }

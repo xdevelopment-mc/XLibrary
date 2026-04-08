@@ -4,17 +4,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+/**
+ * @author Anyachkaa
+ */
 public interface Identifiable {
 
-    default Long id() {
+    default Long getId() {
         return -1L;
     }
 
     @NotNull
-    String name();
+    String getName();
 
     @NotNull
-    UUID uniqueId();
+    UUID getUniqueId();
 
     default UUID generateUniqueId() {
         return UUID.randomUUID();

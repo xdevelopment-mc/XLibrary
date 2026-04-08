@@ -1,7 +1,5 @@
 package net.xdevelopment.xlibrary.schematic.command;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import net.xdevelopment.xlibrary.command.ArgumentCommand;
 import net.xdevelopment.xlibrary.command.Command;
 import net.xdevelopment.xlibrary.command.CommandContext;
@@ -14,8 +12,13 @@ import net.xdevelopment.xlibrary.schematic.SchematicMessages;
 import net.xdevelopment.xlibrary.schematic.nativeapi.SchematicConverter;
 import net.xdevelopment.xlibrary.schematic.selection.PlayerSelection;
 import net.xdevelopment.xlibrary.schematic.selection.SelectionListener;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -41,11 +44,11 @@ public class SchematicCommand extends Command {
         this.selectionListener = selectionListener;
         this.schematicsFolder = schematicsFolder;
 
-        argument(new WandArgument());
-        argument(new SaveArgument());
-        argument(new PasteArgument());
-        argument(new UndoArgument());
-        argument(new ConvertArgument());
+        addArgument(new WandArgument());
+        addArgument(new SaveArgument());
+        addArgument(new PasteArgument());
+        addArgument(new UndoArgument());
+        addArgument(new ConvertArgument());
     }
 
     @Override
@@ -63,7 +66,7 @@ public class SchematicCommand extends Command {
     class WandArgument extends ArgumentCommand {
         @Override
         public void execute(CommandContext context) {
-            Player player = context.player();
+            Player player = context.getPlayer();
             player.getInventory().addItem(new ItemStack(SelectionListener.WAND_MATERIAL));
             context.sendMessage(SchematicMessages.WAND_GIVE);
             context.sendMessage(SchematicMessages.WAND_LEFT);
@@ -80,14 +83,14 @@ public class SchematicCommand extends Command {
                 return;
             }
 
-            Player player = context.player();
+            Player player = context.getPlayer();
             PlayerSelection selection = selectionListener.getSelection(player);
             if (selection == null || !selection.isComplete()) {
                 context.sendMessage(SchematicMessages.NO_SELECTION);
                 return;
             }
 
-            String name = context.argument(0);
+            String name = context.getArgument(0);
             File file = new File(schematicsFolder, name + ".json");
 
             context.sendMessage(SchematicMessages.SAVE_START, Map.of("name", name));
@@ -111,7 +114,7 @@ public class SchematicCommand extends Command {
                 return;
             }
 
-            String name = context.argument(0);
+            String name = context.getArgument(0);
             File file = new File(schematicsFolder, name + ".json");
 
             if (!file.exists()) {
@@ -121,9 +124,9 @@ public class SchematicCommand extends Command {
 
             context.sendMessage(SchematicMessages.PASTE_START, Map.of("name", name));
 
-            manager.paste(file, context.player().getLocation())
+            manager.paste(file, context.getPlayer().getLocation())
                     .thenAccept(session -> {
-                        if (session != null) lastSessions.put(context.player().getUniqueId(), session);
+                        if (session != null) lastSessions.put(context.getPlayer().getUniqueId(), session);
                         context.sendMessage(SchematicMessages.PASTE_SUCCESS, Map.of("name", name));
                     })
                     .exceptionally(ex -> {
@@ -141,7 +144,7 @@ public class SchematicCommand extends Command {
                 List<String> names = Arrays.stream(files)
                         .map(f -> f.getName().replace(".json", ""))
                         .toList();
-                return CollectionUtility.getSequentialMatches(names, context.argument(0));
+                return CollectionUtility.getSequentialMatches(names, context.getArgument(0));
             }
             return super.tabComplete(context);
         }
@@ -152,7 +155,7 @@ public class SchematicCommand extends Command {
     class UndoArgument extends ArgumentCommand {
         @Override
         public void execute(CommandContext context) {
-            Player player = context.player();
+            Player player = context.getPlayer();
             Object session = lastSessions.remove(player.getUniqueId());
             if (session == null) {
                 context.sendMessage(SchematicMessages.UNDO_FAIL);
@@ -171,7 +174,7 @@ public class SchematicCommand extends Command {
     @CommandName("convert")
     class ConvertArgument extends ArgumentCommand {
         public ConvertArgument() {
-            argument(new ConvertSchematicArgument());
+            addArgument(new ConvertSchematicArgument());
         }
 
         @Override

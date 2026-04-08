@@ -17,12 +17,12 @@ public class PlayerSelection implements Identifiable {
     private Location pos2;
 
     @Override
-    public @org.jetbrains.annotations.NotNull String name() {
+    public @org.jetbrains.annotations.NotNull String getName() {
         return "Selection-" + uniqueId;
     }
 
     @Override
-    public @org.jetbrains.annotations.NotNull UUID uniqueId() {
+    public @org.jetbrains.annotations.NotNull UUID getUniqueId() {
         return uniqueId;
     }
 

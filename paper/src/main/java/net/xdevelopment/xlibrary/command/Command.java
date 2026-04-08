@@ -1,5 +1,6 @@
 package net.xdevelopment.xlibrary.command;
 
+import net.xdevelopment.xlibrary.core.Identifiable;
 import net.xdevelopment.xlibrary.command.annotation.CommandName;
 import net.xdevelopment.xlibrary.command.annotation.CommandAliases;
 import net.xdevelopment.xlibrary.command.annotation.CommandPermission;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.xdevelopment.xlibrary.core.Identifiable;
 
 import java.util.UUID;
 
@@ -26,8 +26,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public abstract class Command implements CommandExecutor, Identifiable {
 
-    UUID uniqueId = generateUniqueId();
     String name;
+    UUID uniqueId = generateUniqueId();
 
     @Unmodifiable
     List<String> aliases;
@@ -54,19 +54,9 @@ public abstract class Command implements CommandExecutor, Identifiable {
     }
 
     @NotNull
-    public Command argument(@NotNull ArgumentCommand argumentCommand) {
+    public Command addArgument(@NotNull ArgumentCommand argumentCommand) {
         argumentCommands.put(argumentCommand.getName().toLowerCase(), argumentCommand);
         return this;
-    }
-
-    @Override
-    public @NotNull UUID uniqueId() {
-        return uniqueId;
-    }
-
-    @Override
-    public @NotNull String name() {
-        return name;
     }
 
     @Nullable

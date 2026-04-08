@@ -40,7 +40,7 @@ public record CommandContext(CommandSender sender,
     }
 
     @NotNull
-    public Player player() {
+    public Player getPlayer() {
         if (!(sender instanceof Player player)) {
             throw new IllegalStateException("Sender is not a player");
         }
@@ -48,7 +48,7 @@ public record CommandContext(CommandSender sender,
     }
 
     @Override
-    public String argument(int i) {
+    public String getArgument(int i) {
         return arguments[i + argumentOffset];
     }
 
