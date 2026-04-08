@@ -1,6 +1,5 @@
 package net.xdevelopment.xlibrary.utility.gui.executable;
 
-
 import lombok.Getter;
 import net.xdevelopment.xlibrary.utility.gui.slot.MenuSlot;
 import org.bukkit.entity.Player;

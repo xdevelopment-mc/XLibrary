@@ -1,7 +1,6 @@
 package net.xdevelopment.xlibrary.utility.gui;
 
-
-import lombok.RequiredArgsConstructor;
+import net.xdevelopment.xlibrary.core.collection.ExpiringSet;
 import net.xdevelopment.xlibrary.utility.gui.executable.ExecutableClick;
 import net.xdevelopment.xlibrary.utility.gui.slot.MenuSlot;
 import org.bukkit.entity.Player;
@@ -10,18 +9,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
 
-import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-
-@RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class MenuListener implements Listener {
-    private static final Set<UUID> throttled = ConcurrentHashMap.newKeySet();
-    private final Plugin plugin;
+    private static final ExpiringSet<UUID> throttled = new ExpiringSet<>(100L);
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {
@@ -43,7 +36,7 @@ public class MenuListener implements Listener {
                 event.setCancelled(true);
             }
         }
-        
+
         if (event.getAction() == InventoryAction.NOTHING || event.getClickedInventory() == null) {
             return;
         }
@@ -62,16 +55,13 @@ public class MenuListener implements Listener {
         }
 
         if (slot.hasExecutable()) {
-            final UUID uuid = player.getUniqueId();
-            if (!throttled.add(uuid)) {
+            if (!throttled.add(player.getUniqueId())) {
                 event.setCancelled(true);
                 return;
             }
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> throttled.remove(uuid), 2L);
 
             final ExecutableClick executable = slot.getExecutable();
             final ClickType click = event.getClick();
-
 
             switch (click) {
                 case LEFT -> executable.onLeft(player);
@@ -81,7 +71,6 @@ public class MenuListener implements Listener {
                 case SHIFT_RIGHT -> executable.onShiftRight(player);
                 default -> {}
             }
-
         }
     }
 
@@ -101,7 +90,7 @@ public class MenuListener implements Listener {
             menu.getExecutableClose().run(player);
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(InventoryInteractEvent event) {
         if (event.getView().getTopInventory().getHolder(false) instanceof Menu menu && menu.isInteractDisabled()) {

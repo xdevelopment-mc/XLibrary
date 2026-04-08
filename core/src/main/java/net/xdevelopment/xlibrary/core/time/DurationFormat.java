@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
+// Adapted and improved from: https://github.com/BlackBaroness/duration-serializer-java
 public interface DurationFormat {
 
     @Contract(value = "_, _ -> new", pure = true)

@@ -3,9 +3,18 @@ plugins {
     id("xyz.jpenilla.run-paper")
 }
 
+repositories {
+    mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://maven.enginehub.org/repo/")
+}
+
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":XLibrary-core"))
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.56"))
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
 }
 
 tasks {

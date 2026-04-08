@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":XLibrary-core"))
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 }

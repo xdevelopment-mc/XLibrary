@@ -2,29 +2,37 @@ package net.xdevelopment.xlibrary.utility.gui;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import net.kyori.adventure.text.Component;
 import net.xdevelopment.xlibrary.utility.gui.executable.ExecutableClose;
 import net.xdevelopment.xlibrary.utility.gui.slot.MenuSlot;
+import net.xdevelopment.xlibrary.core.Identifiable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 @Getter
-public class Menu implements InventoryHolder {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Menu implements InventoryHolder, Identifiable {
     
-    private final String id;
-    private Component title;
-    private final Inventory inventory;
-    private final Int2ObjectMap<MenuSlot> slots = new Int2ObjectOpenHashMap<>();
+    final String id;
+    final UUID uniqueId = generateUniqueId();
+    Component title;
+    final Inventory inventory;
+    final Int2ObjectMap<MenuSlot> slots = new Int2ObjectOpenHashMap<>();
     @Setter
-    private boolean interactDisabled = true;
+    boolean interactDisabled = true;
     @Setter
-    private ExecutableClose executableClose;
+    ExecutableClose executableClose;
 
     public Menu(String id, String title, int rows) {
         this(id, Component.text(title), rows);
@@ -109,7 +117,17 @@ public class Menu implements InventoryHolder {
     }
 
     @Override
-    public Inventory getInventory() {
+    public @NotNull Inventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public @NotNull String name() {
+        return id;
+    }
+
+    @Override
+    public @NotNull UUID uniqueId() {
+        return uniqueId;
     }
 }

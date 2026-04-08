@@ -2,6 +2,7 @@ package net.xdevelopment.xlibrary.utility;
 
 import java.util.UUID;
 
+import net.xdevelopment.xlibrary.core.utility.EnumUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -13,22 +14,23 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-@SuppressWarnings("UnstableApiUsage")
 public class HeadUtility {
 
+    private final String HEAD_PREFIX = "PLAYER_HEAD;";
+
     public ItemStack headBuilder(String material) {
-        final String baseHead = "PLAYER_HEAD;";
-        if (material.startsWith(baseHead)) {
+        if (material.startsWith(HEAD_PREFIX)) {
             final ItemStack stack = ItemStack.of(Material.PLAYER_HEAD);
             final SkullMeta meta = (SkullMeta) stack.getItemMeta();
-            final String texture = material.substring(baseHead.length());
+            final String texture = material.substring(HEAD_PREFIX.length());
             if (meta != null) {
                 createRandomProfile(meta, texture);
                 stack.setItemMeta(meta);
             }
             return stack;
         }
-        return ItemStack.of(Material.valueOf(material));
+        Material mat = EnumUtility.get(material, Material.class);
+        return ItemStack.of(mat != null ? mat : Material.BARRIER);
     }
 
     private void createRandomProfile(SkullMeta skullMeta, String texture) {

@@ -23,7 +23,7 @@ subprojects {
         toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     }
 
-    val lombok = project.findProperty("lombok_version")?.toString() ?: "1.18.42"
+    val lombok = project.findProperty("lombok_version")?.toString() ?: "1.18.44"
     val annotations = project.findProperty("annotations_version")?.toString() ?: "26.0.2"
     val fastutil = project.findProperty("fastutil_version")?.toString() ?: "8.5.12"
 

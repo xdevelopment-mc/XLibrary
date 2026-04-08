@@ -1,6 +1,5 @@
 package net.xdevelopment.xlibrary.utility.gui;
 
-
 import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -1,12 +1,14 @@
 package net.xdevelopment.xlibrary.utility.gui.slot;
 
-
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
 import net.kyori.adventure.text.Component;
+import net.xdevelopment.xlibrary.utility.Displayable;
 import net.xdevelopment.xlibrary.utility.HeadUtility;
 import net.xdevelopment.xlibrary.utility.gui.executable.ExecutableClick;
 import org.bukkit.Material;
@@ -19,15 +21,16 @@ import java.util.List;
 
 @Getter
 @Accessors(chain = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @SuppressWarnings("UnstableApiUsage")
 public final class MenuSlot {
-    private ItemStack item;
-    private ExecutableClick executable;
+    ItemStack item;
+    ExecutableClick executable;
     @Getter
-    private boolean interactDisabled;
+    boolean interactDisabled;
     @Setter
-    private int position;
-    private boolean staticSlot;
+    int position;
+    boolean staticSlot;
 
     public MenuSlot(@NotNull ItemStack item) {
         this.item = item;
@@ -41,13 +44,18 @@ public final class MenuSlot {
         this.item = HeadUtility.headBuilder(materialKey);
     }
 
+    public MenuSlot(@NotNull Displayable displayable) {
+        this.item = ItemStack.of(displayable.icon());
+        this.item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(displayable.displayName()));
+    }
+
     public MenuSlot(@NotNull Material material, @NotNull String display, @NotNull List<String> lore) {
         this.item = ItemStack.of(material);
         this.item.setData(DataComponentTypes.CUSTOM_NAME, Component.text(display));
         this.item.setData(DataComponentTypes.LORE, ItemLore.lore()
                 .addLines(lore.stream().map(Component::text).toList())
                 .build());
-        this.item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+        this.item.editMeta(meta -> meta.setHideTooltip(true));
     }
 
     public MenuSlot setItem(@NotNull ItemStack item) {
@@ -73,13 +81,7 @@ public final class MenuSlot {
     }
 
     public MenuSlot hideAttributes(boolean hide) {
-        if (hide) {
-            item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
-            item.setData(DataComponentTypes.HIDE_TOOLTIP);
-        } else {
-            item.unsetData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
-            item.unsetData(DataComponentTypes.HIDE_TOOLTIP);
-        }
+        item.editMeta(meta -> meta.setHideTooltip(hide));
         return this;
     }
 
