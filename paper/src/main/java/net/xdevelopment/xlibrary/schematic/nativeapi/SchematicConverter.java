@@ -23,6 +23,7 @@ public class SchematicConverter {
     final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
     @NotNull
+    public File convert(@NotNull File esrcFile) throws Exception {
         String json = Files.readString(esrcFile.toPath());
         JsonObject root = JsonParser.parseString(json).getAsJsonObject();
 
