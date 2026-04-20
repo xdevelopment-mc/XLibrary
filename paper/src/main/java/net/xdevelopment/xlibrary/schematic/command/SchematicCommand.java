@@ -3,6 +3,7 @@ package net.xdevelopment.xlibrary.schematic.command;
 import net.xdevelopment.xlibrary.command.ArgumentCommand;
 import net.xdevelopment.xlibrary.command.Command;
 import net.xdevelopment.xlibrary.command.CommandContext;
+import net.xdevelopment.xlibrary.command.annotation.CommandArgument;
 import net.xdevelopment.xlibrary.command.annotation.CommandName;
 import net.xdevelopment.xlibrary.command.annotation.CommandPermission;
 import net.xdevelopment.xlibrary.command.annotation.OnlyPlayer;
@@ -77,7 +78,7 @@ public final class SchematicCommand extends Command {
         context.sendMessage(SchematicMessages.HELP_CONVERT);
     }
 
-    @CommandName("wand")
+    @CommandArgument("wand")
     @OnlyPlayer
     final class WandArgument extends ArgumentCommand {
         @Override
@@ -89,7 +90,7 @@ public final class SchematicCommand extends Command {
         }
     }
 
-    @CommandName("save")
+    @CommandArgument("save")
     @OnlyPlayer
     final class SaveArgument extends ArgumentCommand {
         @Override
@@ -120,7 +121,7 @@ public final class SchematicCommand extends Command {
         }
     }
 
-    @CommandName("paste")
+    @CommandArgument("paste")
     @OnlyPlayer
     final class PasteArgument extends ArgumentCommand {
         @Override
@@ -160,7 +161,7 @@ public final class SchematicCommand extends Command {
         }
     }
 
-    @CommandName("undo")
+    @CommandArgument("undo")
     @OnlyPlayer
     final class UndoArgument extends ArgumentCommand {
         @Override
@@ -181,7 +182,7 @@ public final class SchematicCommand extends Command {
         }
     }
 
-    @CommandName("convert")
+    @CommandArgument("convert")
     final class ConvertArgument extends ArgumentCommand {
         public ConvertArgument() {
             addArgument(new ConvertSchematicArgument());
@@ -193,7 +194,7 @@ public final class SchematicCommand extends Command {
         }
     }
 
-    @CommandName("schematic")
+    @CommandArgument("schematic")
     final class ConvertSchematicArgument extends ArgumentCommand {
         @Override
         public void execute(CommandContext context) {

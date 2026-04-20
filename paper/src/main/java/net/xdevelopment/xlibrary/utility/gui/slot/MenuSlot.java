@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import net.kyori.adventure.text.Component;
 import net.xdevelopment.xlibrary.utility.Displayable;
 import net.xdevelopment.xlibrary.utility.HeadUtility;
@@ -20,17 +21,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @Getter
-@Accessors(chain = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Accessors(chain = true, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @SuppressWarnings("UnstableApiUsage")
 public final class MenuSlot {
-    ItemStack item;
-    ExecutableClick executable;
+    @NonFinal ItemStack item;
+    @NonFinal ExecutableClick executable;
     @Getter
-    boolean interactDisabled;
+    @NonFinal boolean interactDisabled;
     @Setter
-    int position;
-    boolean staticSlot;
+    @NonFinal int position;
+    @NonFinal boolean staticSlot;
 
     public MenuSlot(@NotNull ItemStack item) {
         this.item = item;

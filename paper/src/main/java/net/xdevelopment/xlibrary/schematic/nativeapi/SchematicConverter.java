@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.experimental.UtilityClass;
 import net.xdevelopment.xlibrary.core.utility.NumberUtility;
 import net.xdevelopment.xlibrary.schematic.nativeapi.data.JsonLocation;
 import net.xdevelopment.xlibrary.schematic.nativeapi.data.JsonSchematicData;
@@ -16,14 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Deprecated: будет удалено через 5-6 месяцев после релиза нового формата
-public final class SchematicConverter {
+@UtilityClass
+public class SchematicConverter {
 
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-
-    private SchematicConverter() {}
+    final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
     @NotNull
-    public static File convert(@NotNull File esrcFile) throws Exception {
         String json = Files.readString(esrcFile.toPath());
         JsonObject root = JsonParser.parseString(json).getAsJsonObject();
 
@@ -41,7 +40,7 @@ public final class SchematicConverter {
         return jsonFile;
     }
 
-    public static int convertAll(@NotNull File directory) {
+    public int convertAll(@NotNull File directory) {
         File[] esrcFiles = directory.listFiles((dir, name) -> name.endsWith(".esrc"));
         if (esrcFiles == null) return 0;
 
@@ -56,7 +55,7 @@ public final class SchematicConverter {
     }
 
     @NotNull
-    private static List<WorldBlock> parseLegacyBlocks(@NotNull String data) {
+    private List<WorldBlock> parseLegacyBlocks(@NotNull String data) {
         String[] split = data.split("@");
         List<WorldBlock> blocks = new ArrayList<>(split.length);
 

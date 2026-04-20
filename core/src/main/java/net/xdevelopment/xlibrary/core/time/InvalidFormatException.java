@@ -1,9 +1,7 @@
 package net.xdevelopment.xlibrary.core.time;
 
-// Adapted and improved from: https://github.com/BlackBaroness/duration-serializer-java
-public class InvalidFormatException extends Exception {
+import lombok.experimental.StandardException;
 
-    public InvalidFormatException(String message) {
-        super(message);
-    }
-}
+// Adapted and improved from: https://github.com/BlackBaroness/duration-serializer-java
+@StandardException
+public class InvalidFormatException extends Exception {}
