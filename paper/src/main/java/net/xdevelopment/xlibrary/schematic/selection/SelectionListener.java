@@ -45,7 +45,7 @@ public final class SelectionListener implements Listener {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             event.setCancelled(true);
             selection.setPos1(clicked);
-            player.sendMessage(ColorUtility.colorize(SchematicMessages.POS1_SET, Map.of(
+            player.sendMessage(ColorUtility.colorize(SchematicMessages.POS1_SET, Map.<String, Object>of(
                     "x", clicked.getBlockX(),
                     "y", clicked.getBlockY(),
                     "z", clicked.getBlockZ()
@@ -53,7 +53,7 @@ public final class SelectionListener implements Listener {
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             event.setCancelled(true);
             selection.setPos2(clicked);
-            player.sendMessage(ColorUtility.colorize(SchematicMessages.POS2_SET, Map.of(
+            player.sendMessage(ColorUtility.colorize(SchematicMessages.POS2_SET, Map.<String, Object>of(
                     "x", clicked.getBlockX(),
                     "y", clicked.getBlockY(),
                     "z", clicked.getBlockZ()

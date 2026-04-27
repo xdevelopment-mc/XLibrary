@@ -1,26 +1,34 @@
 package net.xdevelopment.xlibrary.utility;
 
-import lombok.experimental.UtilityClass;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.intellij.lang.annotations.Subst;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Map;
 
+import org.intellij.lang.annotations.Subst;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
 @UtilityClass
 public class ColorUtility {
+
     private final MiniMessage MM = MiniMessage.miniMessage();
 
-    public Component colorize(@NotNull String message) {
-        return MM.deserialize(message);
+    @NotNull
+    @Contract(pure = true)
+    public static Component colorize(@NotNull String message) {
+        return MM.deserialize(message).decoration(TextDecoration.ITALIC, false);
     }
 
-    public Component colorize(@NotNull List<String> list) {
+    @NotNull
+    @Contract(pure = true)
+    public static Component colorize(@NotNull List<String> list) {
         return Component.join(
                 JoinConfiguration.separator(Component.newline()),
                 list.stream()
@@ -29,8 +37,10 @@ public class ColorUtility {
         );
     }
 
-    public Component colorize(@NotNull List<String> list,
-                              Map<String, Object> placeholders) {
+    @NotNull
+    @Contract(pure = true)
+    public static Component colorize(@NotNull List<String> list,
+                                     @NotNull Map<String, Object> placeholders) {
         final TagResolver[] resolvers = placeholders.entrySet().stream()
                 .map(entry -> toPlaceholder(entry.getKey(), entry.getValue()))
                 .toArray(TagResolver[]::new);
@@ -43,8 +53,10 @@ public class ColorUtility {
         );
     }
 
-    public Component colorize(@NotNull String message,
-                              @NotNull Map<String, Object> placeholders) {
+    @NotNull
+    @Contract(pure = true)
+    public static Component colorize(@NotNull String message,
+                                     @NotNull Map<String, Object> placeholders) {
         final TagResolver[] resolvers = placeholders.entrySet().stream()
                 .map(entry -> toPlaceholder(entry.getKey(), entry.getValue()))
                 .toArray(TagResolver[]::new);
@@ -52,7 +64,9 @@ public class ColorUtility {
         return MM.deserialize(message, resolvers);
     }
 
-    private TagResolver toPlaceholder(@Subst("") String key, Object value) {
+    @NotNull
+    @Contract(pure = true)
+    private TagResolver toPlaceholder(@Subst("") @NotNull String key, @NotNull Object value) {
         if (value instanceof Component component) {
             return Placeholder.component(key, component);
         }
